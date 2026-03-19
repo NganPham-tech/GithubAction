@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List - Ngân</title>
+    <style>
+        body {
+            margin: 0; font-family: 'Segoe UI', sans-serif; height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            background: linear-gradient(180deg, #ff1493 0%, #ff69b4 40%, #4682b4 70%, #00ced1 100%);
+            background-attachment: fixed;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95); padding: 30px;
+            width: 400px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+        h2 { color: #ff1493; text-align: center; }
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        input { flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 10px; outline: none; }
+        button { padding: 10px 20px; background: #00ced1; border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: bold; }
+        ul { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; }
+        li { background: #f9f9f9; margin-bottom: 8px; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; border-left: 5px solid #ff69b4; }
+        .back-btn { display: block; text-align: center; margin-top: 15px; text-decoration: none; color: #666; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>📝 My Tasks</h2>
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Nhập việc cần làm...">
+            <button onclick="addTask()">Thêm</button>
+        </div>
+        <ul id="taskList"></ul>
+        <a href="/" class="back-btn">← Quay lại trang chủ</a>
+    </div>
+
+    <script>
+        const API_URL = '/api/tasks';
+        async function fetchTasks() {
+            const res = await fetch(API_URL);
+            const tasks = await res.json();
+            const list = document.getElementById('taskList');
+            list.innerHTML = tasks.map(t => `<li><span>${t.title}</span> ${t.completed ? '✅' : '⏳'}</li>`).join('');
+        }
+        async function addTask() {
+            const input = document.getElementById('taskInput');
+            if(!input.value) return;
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({title: input.value, completed: false})
+            });
+            input.value = '';
+            fetchTasks();
+        }
+        fetchTasks();
+    </script>
+</body>
+</html>
