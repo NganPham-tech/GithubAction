@@ -3,57 +3,341 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do List - Ngân</title>
+    <title>To-Do List - Pham Thi Ai Ngan</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
         body {
-            margin: 0; font-family: 'Segoe UI', sans-serif; height: 100vh;
-            display: flex; justify-content: center; align-items: center;
-            background: linear-gradient(180deg, #ff1493 0%, #ff69b4 40%, #4682b4 70%, #00ced1 100%);
-            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            position: relative;
+            overflow: hidden;
+            color: #fff;
         }
+
+        /* Blobs background (Đồng bộ với index) */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: 1;
+            opacity: 0.6;
+            border-radius: 50%;
+        }
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: #ff6a00;
+            top: -100px;
+            left: -100px;
+            animation: moveBlob1 12s infinite alternate;
+        }
+        .blob-2 {
+            width: 350px;
+            height: 350px;
+            background: #ee0979;
+            bottom: -150px;
+            right: -100px;
+            animation: moveBlob2 10s infinite alternate;
+        }
+
+        @keyframes moveBlob1 { 100% { transform: translate(150px, 100px) scale(1.1); } }
+        @keyframes moveBlob2 { 100% { transform: translate(-100px, -50px) scale(1.2); } }
+
+        /* Khung Card Glassmorphism */
         .container {
-            background: rgba(255, 255, 255, 0.95); padding: 30px;
-            width: 400px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 35px;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 25px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            z-index: 10;
+            animation: slideUp 0.8s ease-out;
+            display: flex;
+            flex-direction: column;
         }
-        h2 { color: #ff1493; text-align: center; }
-        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        input { flex: 1; padding: 10px; border: 2px solid #ddd; border-radius: 10px; outline: none; }
-        button { padding: 10px 20px; background: #00ced1; border: none; color: white; border-radius: 10px; cursor: pointer; font-weight: bold; }
-        ul { list-style: none; padding: 0; max-height: 250px; overflow-y: auto; }
-        li { background: #f9f9f9; margin-bottom: 8px; padding: 12px; border-radius: 10px; display: flex; justify-content: space-between; border-left: 5px solid #ff69b4; }
-        .back-btn { display: block; text-align: center; margin-top: 15px; text-decoration: none; color: #666; font-size: 14px; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            color: #ffca28;
+        }
+
+        /* Input Area */
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        input {
+            flex: 1;
+            padding: 14px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        input:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+
+        button {
+            padding: 0 25px;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            border: none;
+            color: white;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 5px 15px rgba(0, 114, 255, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 114, 255, 0.6);
+            background: linear-gradient(45deg, #0072ff, #00c6ff);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* Bảng Task */
+        ul {
+            list-style: none;
+            overflow-y: auto;
+            max-height: 280px;
+            padding-right: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        ul::-webkit-scrollbar {
+            width: 6px;
+        }
+        ul::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #00c6ff;
+            transition: all 0.3s ease;
+            animation: fadeInTask 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        @keyframes fadeInTask {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        li:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
+        }
+
+        li span.title {
+            font-weight: 500;
+            font-size: 15px;
+            word-break: break-word;
+        }
+
+        li span.status {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-left: 15px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 25px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            transition: color 0.3s ease;
+            gap: 8px;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+        }
+
+        /* Error/Empty state Message */
+        .empty-message {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            padding: 20px 0;
+            display: none;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
     <div class="container">
-        <h2>📝 My Tasks</h2>
-        <div class="input-group">
-            <input type="text" id="taskInput" placeholder="Nhập việc cần làm...">
-            <button onclick="addTask()">Thêm</button>
+        <div class="header">
+            <h2><i class="fas fa-clipboard-list"></i> My Tasks</h2>
         </div>
+
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Nhập việc cần làm..." onkeypress="handleEnter(event)">
+            <button onclick="addTask()">
+                <i class="fas fa-plus"></i> Thêm
+            </button>
+        </div>
+
         <ul id="taskList"></ul>
-        <a href="/" class="back-btn">← Quay lại trang chủ</a>
+        <div id="emptyMsg" class="empty-message">Chưa có task nào hoặc không thể tải dữ liệu.</div>
+
+        <a href="/" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Quay lại trang chủ
+        </a>
     </div>
 
     <script>
         const API_URL = '/api/tasks';
-        async function fetchTasks() {
-            const res = await fetch(API_URL);
-            const tasks = await res.json();
-            const list = document.getElementById('taskList');
-            list.innerHTML = tasks.map(t => `<li><span>${t.title}</span> ${t.completed ? '✅' : '⏳'}</li>`).join('');
+
+        // Lắng nghe sự kiện Enter để thêm task
+        function handleEnter(event) {
+            if (event.key === 'Enter') {
+                addTask();
+            }
         }
+
+        async function fetchTasks() {
+            try {
+                const res = await fetch(API_URL);
+                if (!res.ok) throw new Error('API không phản hồi thành công');
+                
+                const tasks = await res.json();
+                renderTasksUI(tasks);
+
+            } catch (error) {
+                console.warn('Backend API không hoạt động, sử dụng LocalStorage làm fallback trong lúc test UI tạm:', error);
+                
+                // Fallback: Nếu mở bằng Live Server và k có backend thì lấy từ localStorage để demo cho đẹp
+                const localTasks = JSON.parse(localStorage.getItem('tempTasks') || '[]');
+                renderTasksUI(localTasks);
+            }
+        }
+
+        function renderTasksUI(tasks) {
+            const list = document.getElementById('taskList');
+            const emptyMsg = document.getElementById('emptyMsg');
+            
+            if (tasks.length === 0) {
+                list.innerHTML = '';
+                emptyMsg.style.display = 'block';
+                return;
+            }
+
+            emptyMsg.style.display = 'none';
+            list.innerHTML = tasks.map((t, index) => {
+                // Thêm animation delay cho từng item
+                let delay = index * 0.1;
+                let statusIcon = t.completed ? '<i class="fas fa-check-circle" style="color: #4CAF50;"></i>' : '<i class="fas fa-hourglass-half" style="color: #ffca28;"></i>';
+                
+                return `<li style="animation-delay: ${delay}s">
+                    <span class="title">${t.title}</span> 
+                    <span class="status">${statusIcon}</span>
+                </li>`;
+            }).join('');
+        }
+
         async function addTask() {
             const input = document.getElementById('taskInput');
-            if(!input.value) return;
-            await fetch(API_URL, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({title: input.value, completed: false})
-            });
+            const title = input.value.trim();
+            if(!title) return;
+            
+            // Xóa rỗng input ngay lập tức cho mượt
             input.value = '';
+
+            try {
+                // Thử gửi cho Backend
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({title: title, completed: false})
+                });
+
+                if (!response.ok) throw new Error('API error');
+            } catch (error) {
+                // Fallback khi chạy Frontend Live Server k có backend
+                const localTasks = JSON.parse(localStorage.getItem('tempTasks') || '[]');
+                localTasks.push({ title: title, completed: false, id: Date.now() });
+                localStorage.setItem('tempTasks', JSON.stringify(localTasks));
+            }
+
             fetchTasks();
         }
+
+        // Tải dữ liệu lần đầu
         fetchTasks();
     </script>
 </body>

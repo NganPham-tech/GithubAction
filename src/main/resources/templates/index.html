@@ -4,86 +4,252 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me - Pham Thi Ai Ngan</title>
+    
+    <!-- Google Fonts cho typography đẹp hơn -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome cho các icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
-        body{
-        margin:0;
-        font-family: Arial, sans-serif;
-        height:100vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
 
-        /* Gradient background */
-        background: linear-gradient(135deg, #667eea, #764ba2);
-    }
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Background gradient sang trọng */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow: hidden;
+        }
 
-    .card{
-        background:white;
-        padding:40px;
-        width:400px;
-        border-radius:15px;
-        text-align:center;
-        box-shadow:0 10px 25px rgba(0,0,0,0.2);
-    }
+        /* Các cục sáng nền (Blobs) tạo cảm giác chuyển động */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: 1;
+            opacity: 0.6;
+        }
+        .blob-1 {
+            width: 300px;
+            height: 300px;
+            background: #ff7e5f;
+            top: -50px;
+            left: -50px;
+            border-radius: 50%;
+            animation: moveBlob1 10s infinite alternate;
+        }
+        .blob-2 {
+            width: 250px;
+            height: 250px;
+            background: #00ced1;
+            bottom: -50px;
+            right: -50px;
+            border-radius: 50%;
+            animation: moveBlob2 8s infinite alternate;
+        }
 
-    h1{
-        margin-bottom:10px;
-    }
+        @keyframes moveBlob1 {
+            100% { transform: translate(100px, 50px) scale(1.2); }
+        }
+        @keyframes moveBlob2 {
+            100% { transform: translate(-100px, -50px) scale(1.1); }
+        }
 
-    h2{
-        color:#555;
-    }
+        /* Hiệu ứng Glassmorphism (Kính mờ) cho Card */
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            z-index: 10;
+            color: #fff;
+            animation: fadeIn 1s ease-out;
+        }
 
-    p{
-        color:#666;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-    .skills{
-        margin-top:20px;
-    }
+        /* Ảnh đại diện (Avatar) */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            margin: 0 auto 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            background-color: #fff;
+            padding: 5px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
 
-    .skills span{
-        display:inline-block;
-        padding:8px 14px;
-        margin:5px;
-        border-radius:20px;
-        background:linear-gradient(45deg,#ff7e5f,#feb47b);
-        color:white;
-        font-size:14px;
-    }
+        .avatar:hover {
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-size: 15px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        /* Kỹ năng (Skills) */
+        .skills {
+            margin: 25px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .skills span {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .skills span:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Nút Action */
+        .action-container {
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 28px;
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(238, 9, 121, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(238, 9, 121, 0.6);
+            background: linear-gradient(45deg, #ee0979, #ff6a00);
+        }
+
+        /* Links mạng xã hội */
+        .social-links {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 20px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: white;
+            color: #764ba2;
+            transform: translateY(-3px);
+        }
     </style>
 </head>
 
 <body>
+    <!-- Nền Blobs chuyển động -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
 
     <div class="card">
-        <h1>Hello!</h1>
-        <h2>My name is Pham Thi Ai Ngan</h2>
-        <p>I'm 21 years old</p>
-        <p>I am a final year IT student and currently learning about Docker and Web Development.</p>
+        <div class="avatar">
+            <!-- Sử dụng DiceBear API để tự động tạo một avatar xinh xắn dựa trên tên -->
+            <img src="https://api.dicebear.com/7.x/notionists/svg?seed=Ngan&backgroundColor=b6e3f4" alt="Avatar">
+        </div>
+        
+        <h1>Pham Thi Ai Ngan</h1>
+        <h2><i class="fas fa-laptop-code"></i> IT Student | 21 Years Old</h2>
+        
+        <p>Hello! 👋 I am a final-year IT student currently exploring Docker and Web Development. Welcome to my Docker demo website!</p>
 
         <div class="skills">
-            <span>Java</span>
-            <span>HTML</span>
-            <span>GitHub</span>
-            <span>Docker</span>
-            <span>Testing</span>
+            <span><i class="fab fa-java"></i> Java</span>
+            <span><i class="fab fa-html5"></i> HTML/CSS</span>
+            <span><i class="fab fa-github"></i> GitHub</span>
+            <span><i class="fab fa-docker"></i> Docker</span>
+            <span><i class="fas fa-vial"></i> Testing</span>
         </div>
 
-        <p>Welcome to my Docker demo website </p>
-        <div style="margin-top: 20px;">
-    <a href="/todo" style="
-        display: inline-block;
-        padding: 10px 25px;
-        background: linear-gradient(45deg, #ff69b4, #00ced1);
-        color: white;
-        text-decoration: none;
-        border-radius: 25px;
-        font-weight: bold;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    ">Xem To-Do List của mình </a>
-</div>
+        <div class="action-container">
+            <a href="/todo" class="btn">
+                <span>Xem To-Do List của mình</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+        
+        <!-- Tuỳ chọn thêm icon mạng xã hội (có thể đổi link github của bạn vào đây) -->
+        <div class="social-links">
+            <a href="https://github.com/nganpham-tech" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+        </div>
     </div>
 
 </body>
