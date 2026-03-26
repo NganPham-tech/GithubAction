@@ -29,5 +29,5 @@ jobs:
           push: true 
 
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/phamthiaingan-app:v${{ github.run_number }}
+            
             ${{ secrets.DOCKERHUB_USERNAME }}/phamthiaingan-app:latest
